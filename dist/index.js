@@ -512,7 +512,8 @@ class IssuesProcessor {
             const issueHasUpdate = IssuesProcessor._updatedSince(issue.updated_at, daysBeforeClose);
             issueLogger.info(`$$type has been updated: ${issueHasUpdate}`);
             // should we un-stale this issue?
-            if (this.options.removeStaleWhenUpdated && issueHasComments) {
+            if (this.options.removeStaleWhenUpdated &&
+                (issueHasComments || issueHasUpdate)) {
                 yield this._removeStaleLabel(issue, staleLabel);
             }
             // now start closing logic

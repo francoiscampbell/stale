@@ -1256,6 +1256,40 @@ test('stale label should be removed if a comment was added to a stale issue', as
   expect(processor.removedLabelIssues.length).toEqual(1);
 });
 
+test('stale label should be removed if a stale issue was updated', async () => {
+  const opts = {...DefaultProcessorOptions};
+  opts.removeStaleWhenUpdated = true;
+
+  const issueCreatedAt = '2020-01-01T17:00:00Z';
+  const staleLabelDate = '2020-01-02T17:00:00Z';
+  const issueUpdatedAt = new Date().toDateString();
+  const TestIssueList: Issue[] = [
+    generateIssue(
+      opts,
+      1,
+      'An issue that should un-stale',
+      issueUpdatedAt,
+      issueCreatedAt,
+      false,
+      ['Stale']
+    )
+  ];
+  const processor = new IssuesProcessorMock(
+    opts,
+    async () => 'abot',
+    async p => (p === 1 ? TestIssueList : []),
+    async () => [],
+    async () => staleLabelDate
+  );
+
+  // process our fake issue list
+  await processor.processIssues(1);
+
+  expect(processor.closedIssues.length).toEqual(0);
+  expect(processor.staleIssues.length).toEqual(0);
+  expect(processor.removedLabelIssues.length).toEqual(1);
+});
+
 test('stale label should not be removed if a comment was added by the bot (and the issue should be closed)', async () => {
   const opts = {...DefaultProcessorOptions};
   opts.removeStaleWhenUpdated = true;
