@@ -1221,7 +1221,7 @@ test('stale issues should not be closed if days is set to -1', async () => {
 
 test('stale label should be removed if a comment was added to a stale issue', async () => {
   const opts = {...DefaultProcessorOptions};
-  opts.removeStaleWhenUpdated = true;
+  opts.removeStaleWhenCommented = true;
   const TestIssueList: Issue[] = [
     generateIssue(
       opts,
@@ -1292,7 +1292,7 @@ test('stale label should be removed if a stale issue was updated', async () => {
 
 test('stale label should not be removed if a comment was added by the bot (and the issue should be closed)', async () => {
   const opts = {...DefaultProcessorOptions};
-  opts.removeStaleWhenUpdated = true;
+  opts.removeStaleWhenCommented = true;
   github.context.actor = 'abot';
   const TestIssueList: Issue[] = [
     generateIssue(
@@ -1331,7 +1331,7 @@ test('stale label should not be removed if a comment was added by the bot (and t
 test('stale label containing a space should be removed if a comment was added to a stale issue', async () => {
   const opts: IIssuesProcessorOptions = {
     ...DefaultProcessorOptions,
-    removeStaleWhenUpdated: true,
+    removeStaleWhenCommented: true,
     staleIssueLabel: 'stat: stale'
   };
   const TestIssueList: Issue[] = [
@@ -2248,7 +2248,7 @@ test('processing an issue stale since less than the daysBeforeStale with a stale
     daysBeforeStale: 30,
     daysBeforeClose: 7,
     closeIssueMessage: 'close message',
-    removeStaleWhenUpdated: false
+    removeStaleWhenCommented: false
   };
   const now: Date = new Date();
   const updatedAt: Date = new Date(now.setDate(now.getDate() - 9));
@@ -2290,7 +2290,7 @@ test('processing an issue stale since less than the daysBeforeStale without a st
     daysBeforeStale: 30,
     daysBeforeClose: 7,
     closeIssueMessage: 'close message',
-    removeStaleWhenUpdated: false
+    removeStaleWhenCommented: false
   };
   const now: Date = new Date();
   const updatedAt: Date = new Date(now.setDate(now.getDate() - 9));

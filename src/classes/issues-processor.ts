@@ -445,8 +445,8 @@ export class IssuesProcessor {
 
     // should we un-stale this issue?
     if (
-      this.options.removeStaleWhenUpdated &&
-      (issueHasComments || issueHasUpdate)
+      (this.options.removeStaleWhenCommented && issueHasComments) ||
+      (this.options.removeStaleWhenUpdated && issueHasUpdate)
     ) {
       await this._removeStaleLabel(issue, staleLabel);
     }
